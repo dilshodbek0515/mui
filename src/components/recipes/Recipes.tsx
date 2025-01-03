@@ -24,7 +24,7 @@ const RecipesCom: FC = () => {
             className='p-5 flex bg-slate-100 flex-col gap-3 rounded-xl'
           >
             <h2 className='text-xl text-black'>{recipe.name}</h2>
-            <p className='text-2xl text-gray-100'>{recipe.cuisine}</p>
+            <p className='text-2xl text-gray-500'>{recipe.cuisine}</p>
             <img
               className='w-full h-auto rounded-xl'
               src={recipe.image}
