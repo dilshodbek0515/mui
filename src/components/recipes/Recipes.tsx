@@ -1,53 +1,38 @@
-import AspectRatio from '@mui/joy/AspectRatio'
-import Button from '@mui/joy/Button'
-import Card from '@mui/joy/Card'
-import CardContent from '@mui/joy/CardContent'
-import IconButton from '@mui/joy/IconButton'
-import Typography from '@mui/joy/Typography'
-import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined'
-const RecipesCom = () => {
+import { FC, useEffect, useState } from 'react'
+import axios from 'axios'
+
+const BASEURL = 'https://dummyjson.com/recipes'
+const RecipesCom: FC = () => {
+  const [data, setData] = useState<any[]>([])
+
+  useEffect(() => {
+    axios
+      .get(`${BASEURL}`)
+      .then(res => {
+        setData(res.data.recipes)
+      })
+      .catch(err => console.log(err))
+      .finally()
+  }, [])
+
   return (
     <div className='w-full h-auto flex items-center justify-center my-10'>
-      <Card sx={{ width: 320 }}>
-        <div>
-          <Typography level='title-lg'>Yosemite National Park</Typography>
-          <Typography level='body-sm'>April 24 to May 02, 2021</Typography>
-          <IconButton
-            aria-label='bookmark Bahamas Islands'
-            variant='plain'
-            color='neutral'
-            size='sm'
-            sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
+      <div className='container mx-auto grid grid-cols-5 gap-5'>
+        {data?.map((recipe, index) => (
+          <div
+            key={index}
+            className='p-5 flex bg-slate-100 flex-col gap-3 rounded-xl'
           >
-            <BookmarkAdd />
-          </IconButton>
-        </div>
-        <AspectRatio minHeight='120px' maxHeight='200px'>
-          <img
-            src='https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286'
-            srcSet='https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286&dpr=2 2x'
-            loading='lazy'
-            alt=''
-          />
-        </AspectRatio>
-        <CardContent orientation='horizontal'>
-          <div>
-            <Typography level='body-xs'>Total price:</Typography>
-            <Typography sx={{ fontSize: 'lg', fontWeight: 'lg' }}>
-              $2,900
-            </Typography>
+            <h2 className='text-xl text-black'>{recipe.name}</h2>
+            <p className='text-2xl text-gray-100'>{recipe.cuisine}</p>
+            <img
+              className='w-full h-auto rounded-xl'
+              src={recipe.image}
+              alt={recipe.title}
+            />
           </div>
-          <Button
-            variant='solid'
-            size='md'
-            color='primary'
-            aria-label='Explore Bahamas Islands'
-            sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-          >
-            Explore
-          </Button>
-        </CardContent>
-      </Card>
+        )) || 'Loading...'}
+      </div>
     </div>
   )
 }
